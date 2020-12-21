@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<title>九章秒杀-正品秒杀！</title>
+	<link rel="icon" href="img/jiuzhanglogo.png">
+
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+	<link rel="stylesheet" type="text/css" href="css/all.css" />
+	<link rel="stylesheet" type="text/css" href="css/pages-seckill-index.css" />
+
+
+
+</head>
+
+<body>
+
+
+		<!--onsale activity list-->
+		<div class="goods-list" id="app">
+			<ul class="seckill" id="seckill">
+				<tr th:each="activity : ${activities}">
+					<li class="seckill-item" >
+						<div class="pic">
+							<img src="img/_/list.jpg" alt=''>
+						</div>
+						<div class="intro">
+							<span th:text="${activity.name}">Activity Name</span>
+						</div>
+						<div class='price'>
+							<b class='sec-price' th:text="'￥'+${activity.onsalePrice}"></b>
+							<b class='ever-price' th:text="'￥'+${activity.originalPrice}"></b>
+						</div>
+						<div class='num'>
+							<div>Sold:999</div>
+							<div class='progress'>
+								<div class='sui-progress progress-danger'>
+									<span style='width: 70%;' class='bar'></span>
+								</div>
+							</div>
+							<div>In stock:
+								<b class='owned'>999</b></div>
+						</div>
+						<a class='sui-btn btn-block btn-buy'  th:href="@{'/item/'+${activity.id}}" target='_blank'>Buy Now</a>
+					</li>
+				</tr>
+			</ul>
+		</div>
+
+
+
+</body>
+
+</html>

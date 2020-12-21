@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<div >
+    <form th:action="@{/addActivityAction}" method="post">
+        Activity Name:<input type="text" name="name"><br><br>
+        Product ID：<input type="text" name="commodityId"><br><br>
+        On sale price：<input type="text" name="onSalePrice"><br><br>
+        Original price：<input type="text" name="originalPrice"><br><br>
+        Number of products：<input type="text" name="number"><br><br>
+        Start time：<input type="datetime-local" name="startTime" ><br><br>
+        End time：<input type="datetime-local" name="endTime"><br><br>
+        <input type="submit" value="submit">
+    </form>
+</div>
+
+
+
+</body>
+</html>
