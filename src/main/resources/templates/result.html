@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Result</title>
+</head>
+<body>
+        <div class="cart py-container" id="cart">
+
+            <div class="checkout py-container">
+                <div class="checkout-tit">
+                    <h4 class="tit-txt">Result</h4>
+                </div>
+                <div class="checkout-steps">
+                    <div class="hr"></div>
+                    <!--Payment and shipping-->
+                    <div class="payshipInfo">
+                        <div class="hr"></div>
+                        <div class="step-cont">
+                            <ul class="send-detail">
+                                <li>
+                                    <div class="sendGoods">
+                                        <em th:text="${resultInfo}"></em>
+                                    </div>
+                                </li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                        </div>
+                        <div class="hr"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="submit">
+                <a class="sui-btn btn-danger btn-xlarge" th:href="@{'/onsale/orderQuery/'+ ${orderNo}}"
+                   target='_blank'>Order details</a>
+            </div>
+        </div>
+</body>
+</html>
