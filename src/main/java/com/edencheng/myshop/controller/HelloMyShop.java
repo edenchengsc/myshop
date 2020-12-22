@@ -8,6 +8,6 @@ public class HelloMyShop {
 
     @GetMapping
     public String helloMyShop(){
-        return "Hello My shop. Testing github setting round 2";
+        return "Hello My shop. Hello git!";
     }
 }
