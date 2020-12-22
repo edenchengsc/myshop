@@ -41,5 +41,10 @@
         <table schema="" tableName="activity" domainObjectName="Activity" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" selectByExampleQueryId="false"></table>
         <table schema="" tableName="commodity" domainObjectName="Commodity" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" selectByExampleQueryId="false"></table>
 
+        <table schema="" tableName="order" domainObjectName="Order" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" selectByExampleQueryId="false"></table>
+        <table schema="" tableName="myshop_user" domainObjectName="User" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" selectByExampleQueryId="false"></table>
+
+
+
     </context>
 </generatorConfiguration>
