@@ -13,21 +13,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from commodity
+    from myshop_commodity
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from commodity
+    delete from myshop_commodity
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.edencheng.myshop.db.po.Commodity">
-    insert into commodity (id, commodity_name, commodity_desc, 
+    insert into myshop_commodity (id, commodity_name, commodity_desc, 
       commodity_price)
     values (#{id,jdbcType=BIGINT}, #{commodityName,jdbcType=VARCHAR}, #{commodityDesc,jdbcType=VARCHAR}, 
       #{commodityPrice,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.edencheng.myshop.db.po.Commodity">
-    insert into commodity
+    insert into myshop_commodity
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -58,7 +58,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.edencheng.myshop.db.po.Commodity">
-    update commodity
+    update myshop_commodity
     <set>
       <if test="commodityName != null">
         commodity_name = #{commodityName,jdbcType=VARCHAR},
@@ -73,7 +73,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.edencheng.myshop.db.po.Commodity">
-    update commodity
+    update myshop_commodity
     set commodity_name = #{commodityName,jdbcType=VARCHAR},
       commodity_desc = #{commodityDesc,jdbcType=VARCHAR},
       commodity_price = #{commodityPrice,jdbcType=INTEGER}

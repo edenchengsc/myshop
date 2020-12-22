@@ -21,15 +21,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from activity
+    from myshop_activity
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from activity
+    delete from myshop_activity
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.edencheng.myshop.db.po.Activity">
-    insert into activity (id, name, commodity_id, 
+    insert into myshop_activity (id, name, commodity_id, 
       original_price, onsale_price, activity_status, 
       start_time, end_time, total_stock, 
       available_stock, lock_stock)
@@ -39,7 +39,7 @@
       #{availableStock,jdbcType=INTEGER}, #{lockStock,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.edencheng.myshop.db.po.Activity">
-    insert into activity
+    insert into myshop_activity
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -112,7 +112,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.edencheng.myshop.db.po.Activity">
-    update activity
+    update myshop_activity
     <set>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
@@ -148,7 +148,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.edencheng.myshop.db.po.Activity">
-    update activity
+    update myshop_activity
     set name = #{name,jdbcType=VARCHAR},
       commodity_id = #{commodityId,jdbcType=BIGINT},
       original_price = #{originalPrice,jdbcType=DECIMAL},
@@ -165,7 +165,7 @@
           resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
-    from activity
+    from myshop_activity
     where activity_status = #{id,jdbcType=SMALLINT}
   </select>
 </mapper>
