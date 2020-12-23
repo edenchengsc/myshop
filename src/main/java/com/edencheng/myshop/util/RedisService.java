@@ -1,5 +1,6 @@
 package com.edencheng.myshop.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
@@ -7,6 +8,7 @@ import redis.clients.jedis.JedisPool;
 
 import java.util.Collections;
 
+@Slf4j
 @Service
 public class RedisService {
 
@@ -80,5 +82,22 @@ public class RedisService {
         Jedis jedis = jedisPool.getResource();
         jedis.incr(key);
         jedis.close();
+    }
+
+    public void addToLimitedMemberList(long activityId, long userId) {
+        Jedis jedisClient = jedisPool.getResource();
+        jedisClient.sadd("activity_users:" + activityId, String.valueOf(userId));
+    }
+
+    public boolean isInLimitedMemberList(long activityId, long userId) {
+        Jedis jedisClient = jedisPool.getResource();
+        boolean isLimitedUser = jedisClient.sismember("activity_users:" + activityId,String.valueOf(userId));
+        log.info("userId:{}, activityId:{}, is in the limited member list {}", userId, activityId, isLimitedUser);
+        return isLimitedUser;
+    }
+
+    public void removeFromLimitedMemberList(Long activityId, Long userId) {
+        Jedis jedisClient = jedisPool.getResource();
+        jedisClient.srem("activity_users:" + activityId, String.valueOf(userId));
     }
 }

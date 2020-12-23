@@ -111,6 +111,14 @@ public class ActivityController {
         ModelAndView modelAndView = new ModelAndView();
         try {
             /*
+             * Check if user is in the limited list
+             */
+            if(redisService.isInLimitedMemberList(activityId, userId)){
+                modelAndView.addObject("resultInfo", "Sorry, you are in the limited member list. ");
+                modelAndView.setViewName("result");
+                return modelAndView;
+            }
+            /*
              * Check if it can process the order
              */
 
@@ -120,6 +128,8 @@ public class ActivityController {
                 modelAndView.addObject("resultInfo", "Getting it. Creating order, ID:" +
                         order.getOrderNo());
                 modelAndView.addObject("orderNo", order.getOrderNo());
+
+                redisService.addToLimitedMemberList(activityId, userId);
             } else {
                 modelAndView.addObject("resultInfo", "Sorry, out of stock");
             }
