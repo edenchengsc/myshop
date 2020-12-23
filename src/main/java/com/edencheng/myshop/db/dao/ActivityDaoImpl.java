@@ -35,10 +35,20 @@ public class ActivityDaoImpl implements ActivityDao {
     }
 
     @Override
-    public boolean lockStock(long activityId) {
+    public boolean lockStock(Long activityId) {
         int result = activityMapper.lockStock(activityId);
         if(result < 1){
             log.error("Lock stock failed");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deductStock(Long activityId){
+        int result = activityMapper.deductStock(activityId);
+        if(result < 1){
+            log.error("Deduct stock failed");
             return false;
         }
         return true;

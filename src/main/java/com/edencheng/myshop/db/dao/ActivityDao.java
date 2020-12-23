@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface ActivityDao {
 
-    public boolean lockStock(long activityId);
 
     public List<Activity> queryActivitysByStatus(int activityStatus);
 
@@ -16,4 +15,8 @@ public interface ActivityDao {
     public Activity queryActivitysById(long activityId);
 
     public void updateActivity(Activity activity);
+
+    public boolean lockStock(Long activityId);
+
+    public boolean deductStock(Long activityId);
 }

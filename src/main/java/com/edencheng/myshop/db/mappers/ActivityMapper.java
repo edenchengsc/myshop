@@ -21,5 +21,7 @@ public interface ActivityMapper {
 
     void insertActivity(Activity activity);
 
-    int lockStock(long activityId);
+    int lockStock(Long activityId);
+
+    int deductStock(Long id);
 }
