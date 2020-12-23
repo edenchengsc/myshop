@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ActivityDao {
 
+    public boolean lockStock(long activityId);
+
     public List<Activity> queryActivitysByStatus(int activityStatus);
 
     public void insertActivity(Activity activity);

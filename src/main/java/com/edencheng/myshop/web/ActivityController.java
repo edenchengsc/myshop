@@ -4,12 +4,16 @@ import com.edencheng.myshop.db.dao.ActivityDao;
 import com.edencheng.myshop.db.dao.CommodityDao;
 import com.edencheng.myshop.db.po.Activity;
 import com.edencheng.myshop.db.po.Commodity;
+import com.edencheng.myshop.db.po.Order;
+import com.edencheng.myshop.service.ActivityService;
 import com.edencheng.myshop.util.RedisService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -18,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Controller
 public class ActivityController {
 
@@ -26,6 +31,9 @@ public class ActivityController {
 
     @Autowired
     private CommodityDao commodityDao;
+
+    @Autowired
+    ActivityService activityService;
 
     @Resource
     private RedisService redisService;
@@ -88,5 +96,34 @@ public class ActivityController {
         resultMap.put("commodityName", commodity.getCommodityName());
         resultMap.put("commodityDesc", commodity.getCommodityDesc());
         return "item";
+    }
+
+    @RequestMapping("/onsale/buy/{userId}/{activityId}")
+    public ModelAndView onsaleCommodity(@PathVariable long userId, @PathVariable long activityId){
+        boolean stockValidateResult = false;
+
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            /*
+             * Check if it can process the order
+             */
+
+            stockValidateResult = activityService.stockValidator(activityId);
+            if (stockValidateResult) {
+                Order order = activityService.createOrder(activityId, userId);
+                modelAndView.addObject("resultInfo", "Getting it. Creating order, ID:" +
+                        order.getOrderNo());
+                modelAndView.addObject("orderNo", order.getOrderNo());
+            } else {
+                modelAndView.addObject("resultInfo", "Sorry, out of stock");
+            }
+        }catch (Exception e){
+            log.error("Exception happened getting the commodity" + e.toString());
+            modelAndView.addObject("resultInfo", "Getting commodity failed");
+        }
+
+        modelAndView.setViewName("result");
+        return modelAndView;
+
     }
 }

@@ -20,4 +20,6 @@ public interface ActivityMapper {
     List<Activity> queryActivitysByStatus(int activityStatus);
 
     void insertActivity(Activity activity);
+
+    int lockStock(long activityId);
 }
