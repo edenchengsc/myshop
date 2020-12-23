@@ -19,4 +19,6 @@ public interface ActivityDao {
     public boolean lockStock(Long activityId);
 
     public boolean deductStock(Long activityId);
+
+    public void revertStock(Long activityId);
 }

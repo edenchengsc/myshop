@@ -75,4 +75,10 @@ public class RedisService {
             }
         }
     }
+
+    public void revertStock(String key) {
+        Jedis jedis = jedisPool.getResource();
+        jedis.incr(key);
+        jedis.close();
+    }
 }

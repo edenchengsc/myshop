@@ -53,4 +53,9 @@ public class ActivityDaoImpl implements ActivityDao {
         }
         return true;
     }
+
+    @Override
+    public void revertStock(Long activityId){
+         activityMapper.revertStock(activityId);
+    }
 }

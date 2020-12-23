@@ -43,6 +43,8 @@ public class ActivityService {
 
         rocketMQService.sendMessage("onsale_order", JSON.toJSONString(order));
 
+        //messageDelaylevel: 1s 5s 10s 30s 1m 2m 3m ....
+        rocketMQService.sendDelayMessage("pay_check", JSON.toJSONString(order),2); // delay timeLevel 2:  5s
         return order;
     }
     /**
