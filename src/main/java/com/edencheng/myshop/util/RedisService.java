@@ -92,7 +92,7 @@ public class RedisService {
     public boolean isInLimitedMemberList(long activityId, long userId) {
         Jedis jedisClient = jedisPool.getResource();
         boolean isLimitedUser = jedisClient.sismember("activity_users:" + activityId,String.valueOf(userId));
-        log.info("userId:{}, activityId:{}, is in the limited member list {}", userId, activityId, isLimitedUser);
+        log.info("userId:{}, activityId:{}, is in the limited member list {}: ", userId, activityId, isLimitedUser);
         return isLimitedUser;
     }
 

@@ -35,7 +35,7 @@ public class PayStatusCheckListener implements RocketMQListener<MessageExt>  {
            Order order = JSON.parseObject(message, Order.class);
            Order orderInfo = orderDao.queryOrder(order.getOrderNo());
            if(orderInfo.getOrderStatus() != 2){
-               log.info("Order hasn't been paid yet, order number: " + orderInfo.getOrderNo());
+               log.info("Order wasn't paid, closing it! order number: " + orderInfo.getOrderNo());
                orderInfo.setOrderStatus(99);
                orderDao.updateOrder(orderInfo);
                activityDao.revertStock(order.getActivityId());

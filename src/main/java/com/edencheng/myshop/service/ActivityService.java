@@ -44,7 +44,7 @@ public class ActivityService {
         rocketMQService.sendMessage("onsale_order", JSON.toJSONString(order));
 
         //messageDelaylevel: 1s 5s 10s 30s 1m 2m 3m ....
-        rocketMQService.sendDelayMessage("pay_check", JSON.toJSONString(order),2); // delay timeLevel 2:  5s
+        rocketMQService.sendDelayMessage("pay_check", JSON.toJSONString(order),4); // delay timeLevel 2:  5s
         return order;
     }
     /**
@@ -58,16 +58,27 @@ public class ActivityService {
         return redisService.stockDeductValidator(key);
     }
 
-    public void payOrderProcess(String orderNo) {
+    public void payOrderProcess(String orderNo) throws Exception {
         //deduct stock: avai - 1, lock - 1
-        //redis?
+        //redis
         log.info("Complete payment, orderNo:" + orderNo);
         Order order = orderDao.queryOrder(orderNo);
+
+        if(order == null){
+            log.error("Order number does not exists: " + orderNo);
+            return;
+        } else if(order.getOrderStatus() != 1){
+            log.error("Invalid order: " + orderNo);
+            return;
+        }
+
         boolean deductStockResult = activityDao.deductStock(order.getActivityId());
         if(deductStockResult){
             order.setPayTime(new Date());
             order.setOrderStatus(2);
             orderDao.updateOrder(order);
+
+            rocketMQService.sendMessage("pay_done", JSON.toJSONString(order));
         }
 
     }
