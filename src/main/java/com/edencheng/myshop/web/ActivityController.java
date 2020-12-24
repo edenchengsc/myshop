@@ -1,5 +1,6 @@
 package com.edencheng.myshop.web;
 
+import com.alibaba.fastjson.JSON;
 import com.edencheng.myshop.db.dao.ActivityDao;
 import com.edencheng.myshop.db.dao.CommodityDao;
 import com.edencheng.myshop.db.dao.OrderDao;
@@ -9,19 +10,18 @@ import com.edencheng.myshop.db.po.Commodity;
 import com.edencheng.myshop.db.po.Order;
 import com.edencheng.myshop.service.ActivityService;
 import com.edencheng.myshop.util.RedisService;
+import com.mysql.cj.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -92,8 +92,26 @@ public class ActivityController {
 
     @RequestMapping("/item/{activityId}")
     public String itemPage(Map<String, Object> resultMap, @PathVariable long activityId){
-        Activity activity = activityDao.queryActivitysById(activityId);
-        Commodity commodity = commodityDao.queryCommodityById(activity.getCommodityId());
+        Activity activity;
+        Commodity commodity;
+
+        String activityInfo = redisService.getValue("activity:" + activityId);
+
+        if(StringUtils.isNullOrEmpty(activityInfo)){
+            log.info("redis cached data:" + activityInfo);
+            activity = JSON.parseObject(activityInfo, Activity.class);
+        } else {
+            activity = activityDao.queryActivitysById(activityId);
+        }
+
+        String commodityInfo = redisService.getValue("commodity:" + activity.getCommodityId());
+        if(StringUtils.isNullOrEmpty(commodityInfo)){
+            log.info("redis cached data:" + commodityInfo);
+            commodity = JSON.parseObject(activityInfo, Commodity.class);
+        } else {
+            commodity = commodityDao.queryCommodityById(activity.getCommodityId());
+        }
+
         resultMap.put("activity", activity);
         resultMap.put("commodity", commodity);
         resultMap.put("onsalePrice", activity.getOnsalePrice());
@@ -167,4 +185,16 @@ public class ActivityController {
         activityService.payOrderProcess(orderNo);
         return "redirect:/orderQuery/" + orderNo;
     }
+
+    @ResponseBody
+    @RequestMapping("/seckill/getSystemTime")
+    public String getSystemTime() {
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        String date = df.format(new Date());
+        return date;
+    }
+
+
 }

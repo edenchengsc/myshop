@@ -2,8 +2,10 @@ package com.edencheng.myshop.service;
 
 import com.alibaba.fastjson.JSON;
 import com.edencheng.myshop.db.dao.ActivityDao;
+import com.edencheng.myshop.db.dao.CommodityDao;
 import com.edencheng.myshop.db.dao.OrderDao;
 import com.edencheng.myshop.db.po.Activity;
+import com.edencheng.myshop.db.po.Commodity;
 import com.edencheng.myshop.db.po.Order;
 import com.edencheng.myshop.mq.RocketMQService;
 import com.edencheng.myshop.util.RedisService;
@@ -23,6 +25,9 @@ public class ActivityService {
 
     @Autowired
     private ActivityDao activityDao;
+
+    @Autowired
+    private CommodityDao commodityDao;
 
     @Autowired
     private RocketMQService rocketMQService;
@@ -81,5 +86,12 @@ public class ActivityService {
             rocketMQService.sendMessage("pay_done", JSON.toJSONString(order));
         }
 
+    }
+
+    public void pushInfoToRedis(long activityId){
+        Activity activity = activityDao.queryActivitysById(activityId);
+        redisService.setValue("activity:" + activityId, JSON.toJSONString(activity));
+        Commodity commodity = commodityDao.queryCommodityById(activity.getCommodityId());
+        redisService.setValue("commodity:" + activity.getCommodityId(), JSON.toJSONString(commodity));
     }
 }
