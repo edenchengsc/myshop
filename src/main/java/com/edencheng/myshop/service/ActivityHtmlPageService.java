@@ -46,10 +46,10 @@ public class ActivityHtmlPageService {
             Context context = new Context();
             context.setVariables(resultMap);
 
-            File file = new File("src/main/resources/templates" + "item_" + activityId + ".html");
+            File file = new File("src/main/resources/templates/" + "item_" + activityId + ".html");
             writer = new PrintWriter(file);
 
-            templateEngine.process("_item", context, writer);
+            templateEngine.process("item", context, writer);
         }catch (Exception e) {
             log.error(e.toString());
             log.error("Generating   static content error" + activityId);
