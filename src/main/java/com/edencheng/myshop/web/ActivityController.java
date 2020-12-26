@@ -1,5 +1,8 @@
 package com.edencheng.myshop.web;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
 import com.edencheng.myshop.db.dao.ActivityDao;
 import com.edencheng.myshop.db.dao.CommodityDao;
@@ -81,13 +84,21 @@ public class ActivityController {
 
     @RequestMapping("/onSales")
     public String activityList(Map<String, Object> resultMap) {
-        List<Activity> activities =
-                activityDao.queryActivitysByStatus(1);
-        for(Activity activity : activities){
-            redisService.setValue("stock:" + activity.getId(), (long) activity.getAvailableStock());
+
+        try(Entry entry = SphU.entry("activityListPage")){
+            List<Activity> activities =
+                    activityDao.queryActivitysByStatus(1);
+            for(Activity activity : activities){
+                redisService.setValue("stock:" + activity.getId(), (long) activity.getAvailableStock());
+            }
+            resultMap.put("activities", activities);
+            return "activity";
+        } catch (BlockException exception){
+            log.error(exception.toString());
+            return "wait";
         }
-        resultMap.put("activities", activities);
-        return "activity";
+
+
     }
 
     @RequestMapping("/item/{activityId}")
