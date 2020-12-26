@@ -1,5 +1,6 @@
 package com.edencheng.myshop;
 
+import com.edencheng.myshop.service.ActivityService;
 import com.edencheng.myshop.util.RedisService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,9 @@ public class RedisDemoTest {
 
     @Resource
     private RedisService redisService;
+
+    @Resource
+    private ActivityService activityService;
 
     @Test
     public void stockTest(){
@@ -30,6 +34,19 @@ public class RedisDemoTest {
         String stock = redisService.getValue("stock:32");
         System.out.println("stock:" + stock);
 
+    }
+
+    @Test
+    public void pushInfoToRedisTest(){
+        activityService.pushInfoToRedis(33);
+    }
+
+    @Test
+    public void getInfoToRedisTest(){
+        String activtityInfo = redisService.getValue("activity:" + 33);
+        System.out.println(activtityInfo);
+        String commodityInfo = redisService.getValue("commodity:" + 3);
+        System.out.println(commodityInfo);
     }
 
 }
