@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.UUID;
 
 @SpringBootTest
 public class RedisDemoTest {
@@ -47,6 +48,14 @@ public class RedisDemoTest {
         System.out.println(activtityInfo);
         String commodityInfo = redisService.getValue("commodity:" + 3);
         System.out.println(commodityInfo);
+    }
+
+    @Test
+    public void testConcurrentAddLock(){
+        for(int i = 0; i < 10; i++){
+            String requestId = UUID.randomUUID().toString();
+            System.out.println(redisService.tryGetDistributedLock("A", requestId, 1000));
+        }
     }
 
 }
